@@ -1,18 +1,20 @@
-import express from 'express'
+// server/routes/taskRoutes.js
+import express from "express";
+import auth from "../middleware/authMiddleware.js";
+import {
+  createTask,
+  getTasks,
+  updateTask,
+  deleteTask,
+  smartAssign,
+} from "../controllers/taskController.js";
 
-import {smartAssign} from '../controllers/assignController.js'
-import {createTask, deleteTask, getTasks, updateTask} from '../controllers/taskController.js'
-import {auth} from '../middleware/auth.js'
+const router = express.Router();
 
-const router = express.Router()
+router.post("/", auth, createTask);
+router.get("/", auth, getTasks);
+router.put("/:id", auth, updateTask);
+router.delete("/:id", auth, deleteTask);
+router.post("/:taskId/smart-assign", auth, smartAssign);
 
-router.get('/', getTasks)
-
-router.post('/', auth, createTask)
-
-router.put('/:id', auth, updateTask)
-router.put('/smart-assign/:id', auth, smartAssign)
-
-router.delete('/:id', auth, deleteTask)
-
-export default router
+export default router;
